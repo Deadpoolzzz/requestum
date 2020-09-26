@@ -12,38 +12,37 @@ function splitList($list, $n) {
     $partition = [];
     $startPoint = 0;
 
-	for($i = 0; $i < $n; $i ++) {
-		$incr = ($i < $partRemains) ? $partLength + 1 : $partLength;
-		$partition[$i] = array_slice($list, $startPoint, $incr);
-		$startPoint += $incr;
+    for($i = 0; $i < $n; $i ++) {
+        $incr = ($i < $partRemains) ? $partLength + 1 : $partLength;
+	$partition[$i] = array_slice($list, $startPoint, $incr);
+	$startPoint += $incr;
+    }
+
+    $a = 0;
+
+    $maxRows = max(array_map(function($n) use ($a) {
+        $numOfElements = count($n);
+
+    	if ($a < $numOfElements) {
+	    $a = $numOfElements;
+    	}
+
+    	return $a;
+    }, $partition));
+
+    for ($i = 0; $i < $maxRows; $i++) {
+	$html .= '<tr>';
+	foreach ($partition as $key => &$parts) {
+	    $html .= '<td>' . array_shift($parts) . '</td>';
 	}
+	$html .= '</tr>';
+    }
 
-	$a = 0;
+    unset($parts);
 
-	$maxRows = max(array_map(function($n) use ($a) {
-		$numOfElements = count($n);
+    $html .= '</table>';
 
-		if ($a < $numOfElements) {
-			$a = $numOfElements;
-		}
-
-		return $a;
-	}, $partition));
-
-	for ($i = 0; $i < $maxRows; $i++) {
-		$html .= '<tr>';
-		foreach ($partition as $key => &$parts) {
-			$html .= '<td>' . array_shift($parts) . '</td>';
-		}
-		$html .= '</tr>';
-	}
-
-	unset($parts);
-
-	$html .= '</table>';
-
-	return $html;
+    return $html;
 }
 
 echo splitList($list, $n);
-
